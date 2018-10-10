@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href="./bootstrap.min.css">
+    <script src="jquery-3.2.1.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+           
+            <button type="button" class="navbar-toggle collapse"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+            </button>
+            <!-- class=navbar-brand : 表示图标 logo -->
+            <a class="navbar-brand" href="#">小学四则运算</a>
+        </div>
+        <!-- 当 页面宽度到一定程度， 会被呈现出来
+        -->
+       
+    </div>
+ 
+
+</nav>
+<div  style="width: 100%;height: 70px;">
+    <div style=" padding-left: 30px;">
+        <input  class="input" type="text" id="exercise-num" name="" placeholder="输入计算式的个数" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+       <button class="btn btn-defult" onclick="show()"> 提交 </button>
+    </div>
+    <div id="show" style=" padding-left: 35px;">
+    	
+    </div>
+</div>
+
+<script>
+        
+         
+
+            //首先确定，运算符数量。
+            //得到运算符
+            //其次，得到数字+1
+            //依次判断 运算符是否为  *|/，  若是的话，通过数组，进行计算 splice，再存入数组
+            
+         	//符号位的随机数================  
+         
+         
+         function show(){
+
+
+
+            var exercise_num = $("#exercise-num").val();
+
+
+            for(let i=0; i< exercise_num; ){
+
+            var operator_num = parseInt(Math.random()*3 + 2);
+            
+            var Arr_operator = [];
+            for(let i=0; i<operator_num; i++){
+                var operator_that_num = parseInt(Math.random()*4);
+                switch (operator_that_num) {
+                        case 0:
+                        Arr_operator[i] = '+';
+                        break;
+                        case 1:
+                        Arr_operator[i] = '-';
+                        break;
+                        case 2:
+                        Arr_operator[i] = '*';
+                        break;
+                        case 3:
+                        Arr_operator[i] = '/';
+                        break;
+                }       
+            }
+            // 随机数的数组========
+            var Arr_num = [];
+            for(let j = 0; j<operator_num +1 ; j++){
+                var Arr_that_num = parseInt(Math.random()*100+1);
+                Arr_num[j] = Arr_that_num;
+            }
+
+
+            //运算式===================
+            var op_formula = '';
+            for(let z = 0; z< Arr_num.length  ; z++ ){
+                if( z == Arr_num.length-1 ){
+                    op_formula += Arr_num[z];
+                    break;
+                }
+                op_formula += Arr_num[z] + Arr_operator[z];
+            }
+
+        
+            // var i= 0;
+            //经过符号次数的计算
+            //Arr_operator符号数组，Arr_num随机数数组 
+            for(let i=0; i<operator_num; i++){ 
+              if(Arr_operator[i] == '*' || Arr_operator[i] == '/'){
+                    Arr_num.splice(i, 2 , operator_small_result(Arr_operator[i],Arr_num[i],Arr_num[i+1]));
+                    Arr_operator.splice(i, 1);
+                    i--;
+                } 
+            }
+
+            for (let i=0; i<Arr_operator.length; i++) {
+                Arr_num.splice(i, 2 , operator_small_result(Arr_operator[i],Arr_num[i],Arr_num[i+1]) );
+                Arr_operator.splice(i, 1);
+                    i--;
+            }
+            
+            if ( Arr_num[0] > 0.1) {
+                
+                i++;
+                Arr_num[0] =   Arr_num[0].toFixed(2);
+               var str ='<p>' + op_formula + " = " + Arr_num.toString() + '</p>'
+               $("#show").append(str);
+            }
+                
+        }
+    }
+     
+   
+            function operator_small_result(operator, num1,num2){
+            
+            switch (operator) {
+                    case '+':
+                     result = num1 + num2;
+                    break;
+                    case '-':
+                     result = num1 - num2;
+                    break;
+                    case '*':
+                     result = num1 * num2;
+                    break;
+                    case '/':
+                     result = num1 / num2;
+                    break;
+                 
+            }
+            return result;
+            }
+
+    </script>
+<script src='./bootstrap.min.js'></script>
+</body>
+</html>
